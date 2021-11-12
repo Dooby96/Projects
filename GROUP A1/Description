@@ -1,0 +1,47 @@
+Part I: Exploratory analysis (3 points)
+
+Read the dataset correctly using pandas, using an appropriate column as index (1 point)
+Compute the percentage of survivors out of total number of passengers and the percentage of men and women out of total number of passengers (0.5 points)
+Compute the percentage of survivors by sex (i.e. the percentage of male passengers that survived and female passengers that survived) and the sex distribution of survivors (i.e. percentage of survivors that were men and percentage of survivors that were women) (0.5 points)
+Display in a 2 x 2 DataFrame the probability of being male/female and surviving/not surviving (0.5 points)
+One possible option:
+
+ 	Survived	Not survived
+Male	Male & Survived	Male & Not survived
+Female	Female & Survived	Female & Not survived
+
+
+Notice that the sum of all values in the table above should be 1 (or 100 %).
+
+Display in a DataFrame the probability of survival/not survival of all combinations of sex and class (0.5 points)
+One possible option:
+
+ 	Survived	Not survived
+Male	1	Male & Survived & Class 1	...
+2	Male & Survived & Class 2	...
+3	...	...
+Female	1	...	...
+2	...	...
+3	...	...
+
+
+Notice that the sum of all values in the table above should be 1 (or 100 %).
+
+Part II: Imputing missing values (4 points)
+
+Devise two different strategies to impute the missing values in the Age column (3 points)
+You cannot use machine learning algorithms, only manual techniques. This rules out KNN, Deep Learning, sklearn.preprocessing.Imputer, fancyimpute, missingno, and similar. In other words: you can only use pandas.
+
+Some basic ideas (that should be improved): fill all the missing values with random values (very bad!), fill all the missing values with the average age of the whole dataset (bad!), fill all the missing values with the median age (so so).
+
+Compare the two strategies by computing the standard deviation of the overall Age column after applying each of them, as well as the standard deviation of the age of each group of sex and class (1 point).
+For the standard deviation of "the age of each group of sex and class", one possible option is to display a table like this:
+
+ 	Age standard deviation (strategy 1)
+Standard deviation (strategy 2)
+Male	1	...	 
+2	...	 
+3	...	 
+Female	1	...	 
+2	...	 
+3	...	 
