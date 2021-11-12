@@ -1,0 +1,158 @@
+To complete the assignment, follow the steps below. The `titanic.csv` is attached. Steps 1, 2, and 3 are independent of each other, steps 4 onwards depend on the previous ones. Every step has an example at the end of this text of how it should behave.
+
+Write a function `fill_age` that receives a parameter `value` of type `str`, and returns a `float` if the parameter is not empty, otherwise returns `-1`. (1 point)
+Write a function `split_raw_fields` that receives a parameter `line` of type `str`, containing several words separated by commas, and returns a `list` of `str`, where each element corresponds to each of the words of the original string, without any whitespace at the beginning or at the end of the word. (2 points)
+Write a function `build_record` that receives two parameters: `fields` (a `tuple` of heterogeneous elements) and `header` (a `list` of `str`) and returns a `dict`, where each key is an element of `header` and each value is an element of `fields`. (2 points)
+Write a function `extract_fields` that receives a parameter `line` of type `str` with a specific structure (see example below), uses `fill_age` and `split_raw_fields`, and returns a `tuple` of elements, with the types (int, bool, int, str, str, float, int, int, str, float, str, str). (2 points)
+Write a function `read_data` that receives a file handle (as returned by `open`) and returns a `list` of records, each record corresponding to each line of `titanic.csv` (except for the first one). Hint: store the first line as `header`, you will need it to call `build_record` on the rest of the lines of the file. (2 points)
+Compute the mean age of the first 10 records, excluding the ones where the age is unknown (where "unknown", given our `fill_age` function, is `-1`). (1 point)
+For maximum grading, code comments where appropriate and overall presentation and code quality will be taken into account.
+
+Examples:
+Step 1:
+
+```
+
+In [2]: age = fill_age("30.5"); age
+Out[2]: 30.5
+
+In [3]: age = fill_age(""); age
+Out[3]: -1
+
+```
+
+Step 2:
+
+```
+
+In [7]: raw_fields = split_raw_fields("a,         b       ,c         ,      d "); raw_fields
+Out[7]: ['a', 'b', 'c', 'd']
+
+```
+
+Step 3:
+
+```
+
+In [8]: record = build_record((1, 2.0, "3", "four"), ["a", "b", "c", "d"]); record
+Out[8]: {'a': 1, 'b': 2.0, 'c': '3', 'd': 'four'}
+
+```
+
+
+
+Step 4:
+
+```
+
+In [5]: fields = extract_fields("1,0,3,Mr. Owen Harris,male,22.0,1,0,A/5 21171,7.25,,S"); fields
+Out[5]: (1, False, 3, 'Mr. Owen Harris', 'male', 22.0, 1, 0, 'A/5 21171', 7.25, '', 'S')
+
+In [6]: fields = extract_fields("6,0,3,Mr. James,male,,0,0,330877,8.4583,,Q"); fields
+Out[6]: (6, False, 3, 'Mr. James', 'male', -1, 0, 0, '330877', 8.4583, '', 'Q')
+
+```
+
+Step 5:
+
+```
+
+In [9]: with open("titanic.csv") as fh:
+   ...:     records = read_data(fh)
+   ...: 
+
+In [10]: records[0]
+Out[10]: 
+{'PassengerId': 1,
+ 'Survived': False,
+ 'Pclass': 3,
+ 'Name': 'Mr. Owen Harris',
+ 'Sex': 'male',
+ 'Age': 22.0,
+ 'SibSp': 1,
+ 'Parch': 0,
+ 'Ticket': 'A/5 21171',
+ 'Fare': 7.25,
+ 'Cabin': '',
+ 'Embarked': 'S'}
+
+In [11]: records[-1]
+Out[11]: 
+{'PassengerId': 891,
+ 'Survived': False,
+ 'Pclass': 3,
+ 'Name': 'Mr. Patrick',
+ 'Sex': 'male',
+ 'Age': 32.0,
+ 'SibSp': 0,
+ 'Parch': 0,
+ 'Ticket': '370376',
+ 'Fare': 7.75,
+ 'Cabin': '',
+ 'Embarked': 'Q'}
+
+```
+
+Assignment
+Group Assignment - Titanic dataset (report)
+Perform an exploratory analysis of the Titanic dataset and implement a strategy to impute missing values.
+
+https://www.kaggle.com/c/titanic/data
+
+(Use train.csv only)
+
+Submission format: One Jupyter notebook (1_Titanic_Group_N.ipynb).
+
+Please do not submit:
+
+A zip file
+A link to Google CoLab
+A file with the wrong extension
+A Python script
+Part I: Exploratory analysis (3 points)
+
+Read the dataset correctly using pandas, using an appropriate column as index (1 point)
+Compute the percentage of survivors out of total number of passengers and the percentage of men and women out of total number of passengers (0.5 points)
+Compute the percentage of survivors by sex (i.e. the percentage of male passengers that survived and female passengers that survived) and the sex distribution of survivors (i.e. percentage of survivors that were men and percentage of survivors that were women) (0.5 points)
+Display in a 2 x 2 DataFrame the probability of being male/female and surviving/not surviving (0.5 points)
+One possible option:
+
+ 	Survived	Not survived
+Male	Male & Survived	Male & Not survived
+Female	Female & Survived	Female & Not survived
+
+
+Notice that the sum of all values in the table above should be 1 (or 100 %).
+
+Display in a DataFrame the probability of survival/not survival of all combinations of sex and class (0.5 points)
+One possible option:
+
+ 	Survived	Not survived
+Male	1	Male & Survived & Class 1	...
+2	Male & Survived & Class 2	...
+3	...	...
+Female	1	...	...
+2	...	...
+3	...	...
+
+
+Notice that the sum of all values in the table above should be 1 (or 100 %).
+
+Part II: Imputing missing values (4 points)
+
+Devise two different strategies to impute the missing values in the Age column (3 points)
+You cannot use machine learning algorithms, only manual techniques. This rules out KNN, Deep Learning, sklearn.preprocessing.Imputer, fancyimpute, missingno, and similar. In other words: you can only use pandas.
+
+Some basic ideas (that should be improved): fill all the missing values with random values (very bad!), fill all the missing values with the average age of the whole dataset (bad!), fill all the missing values with the median age (so so).
+
+Compare the two strategies by computing the standard deviation of the overall Age column after applying each of them, as well as the standard deviation of the age of each group of sex and class (1 point).
+For the standard deviation of "the age of each group of sex and class", one possible option is to display a table like this:
+
+ 	Age standard deviation (strategy 1)
+Standard deviation (strategy 2)
+Male	1	...	 
+2	...	 
+3	...	 
+Female	1	...	 
+2	...	 
+3	...	 
